@@ -4,7 +4,6 @@ require('express-async-errors');
 const express = require('express');
 const app = express();
 // other packages
-const morgan = require('morgan');
 // cookie-parser gives us access to req.cookies
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
@@ -37,7 +36,6 @@ app.use(cors());
 app.use(xss());
 app.use(mongoSanitize());
 
-app.use(morgan('tiny'))
 app.use(express.json()); //this allows us to access json data in req.body
 app.use(cookieParser(process.env.JWT_SECRET)); // sign cookie
 app.use(express.static('./public'));
@@ -45,15 +43,6 @@ app.use(fileUpload());
 
 
 // routes
-app.get('/', (req, res) => {
-    res.send('e-commerce api')
-})
-// temp route to show cookie
-app.get('/api/v1', (req, res) => {
-    // console.log(req.cookies);
-    console.log(req.signedCookies);
-    res.send('dummy route')
-})
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productRouter);
